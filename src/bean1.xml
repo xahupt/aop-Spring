@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--通过配置文件进行AOP-->
+    <bean id="book" class="Book"></bean>
+    <bean id="myBook" class="MyBook"></bean>
+    <aop:config>
+        <!--配置好切入点-->
+        <aop:pointcut id="myBookPointCut" expression="execution(* MyBook.add(..))" ></aop:pointcut>
+        <!--配置好切面-->
+        <aop:aspect ref="book">
+            <!--配合增强类型-->
+            <!--前置增强-->
+            <aop:before method="beforeadd" pointcut-ref="myBookPointCut"></aop:before>
+            <!--后置增强-->
+            <aop:after method="afteradd" pointcut-ref="myBookPointCut"></aop:after>
+            <!--最终增强-->
+            <aop:after-returning method="after_returning_add" pointcut-ref="myBookPointCut"></aop:after-returning>
+            <!--环绕增强-->
+            <aop:around method="aroundadd" pointcut-ref="myBookPointCut"></aop:around>
+        </aop:aspect>
+    </aop:config>
+</beans>
